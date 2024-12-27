@@ -1,95 +1,83 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import React from "react";
+import { useForm } from "react-hook-form";
+import "./styles.css";
 
-export default function Home() {
+type FormValues = {
+  username: string;
+  email: string;
+  password: string;
+  agreeToTerms: boolean;
+};
+
+const RegistrationForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>();
+
+  const onSubmit = (data: FormValues) => {
+    console.log(data);
+    // API呼び出しをここに記述
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="registration-container">
+      <h2>MemorEdgeアカウントを登録してサービスを利用しよう</h2>
+      <form onSubmit={handleSubmit(onSubmit)} className="registration-form">
+        <label>
+          ユーザー名
+          <input
+            {...register("username", { required: "ユーザー名は必須です" })}
+            placeholder="ユーザー名を入力"
+          />
+          {errors.username && <p className="error">{errors.username.message}</p>}
+        </label>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+        <label>
+          メールアドレス
+          <input
+            {...register("email", {
+              required: "メールアドレスは必須です",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "有効なメールアドレスを入力してください",
+              },
+            })}
+            placeholder="メールアドレスを入力"
           />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+          {errors.email && <p className="error">{errors.email.message}</p>}
+        </label>
+
+        <label>
+          パスワード
+          <input
+            type="password"
+            {...register("password", {
+              required: "パスワードは必須です",
+              minLength: {
+                value: 6,
+                message: "パスワードは6文字以上にしてください",
+              },
+            })}
+            placeholder="パスワードを入力"
           />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
+          {errors.password && <p className="error">{errors.password.message}</p>}
+        </label>
+
+        <label className="terms">
+          <input
+            type="checkbox"
+            {...register("agreeToTerms", { required: "利用規約に同意してください" })}
           />
-          Go to nextjs.org → tttttt
-        </a>
-      </footer>
+          利用規約・プライバシーポリシーに同意する
+        </label>
+        {errors.agreeToTerms && <p className="error">{errors.agreeToTerms.message}</p>}
+
+        <button type="submit" className="submit-button">登録する</button>
+      </form>
     </div>
   );
-}
+};
+
+export default RegistrationForm;
