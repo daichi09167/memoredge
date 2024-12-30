@@ -1,13 +1,24 @@
-'use client'; 
 import React from 'react';
-import { Heading, Stack } from '@chakra-ui/react';
+import { Stack, Heading } from '@chakra-ui/react'; // Chakra UI コンポーネント
+import {Navbar} from '@/components/ui/header'; // Navbar のインポート
+import CenteredHeading from '@/components/ui/CenteredHeading'; // インポート
+
 
 const Page = () => {
   return (
-    <Stack gap="2" align="flex-start">
-      <Heading size="5xl">Empower Your Memory, Expand Your Potential.</Heading>
-      <Heading size="xl">Innovative tools to transform how you remember and grow.</Heading>
-    </Stack>
+    <div>
+      {/* ナビバー */}
+      <Navbar />
+
+      {/* メインコンテンツ */}
+      <main >
+      {/* センタリングコンポーネント */}
+      <CenteredHeading 
+        text="Empower Your Memory, Expand Your Potential." 
+        subText="Innovative tools to transform how you remember and grow." 
+      />
+      </main>
+    </div>
   );
 };
 
