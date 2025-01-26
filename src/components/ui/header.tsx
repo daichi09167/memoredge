@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from "next/link"; // Link コンポーネントのインポート
 import { MdOutlineAccountCircle, MdOutlinePersonAddAlt } from 'react-icons/md';
 
  export const Navbar = () => {
@@ -15,6 +16,7 @@ import { MdOutlineAccountCircle, MdOutlinePersonAddAlt } from 'react-icons/md';
     
       }}
     >
+      <Link href="/">
       <div
         style={{
           fontWeight: 'bold',
@@ -24,7 +26,9 @@ import { MdOutlineAccountCircle, MdOutlinePersonAddAlt } from 'react-icons/md';
       >
         MemorEdge
       </div>
+      </Link>
       <div style={{ display: 'flex', gap: '10px' }}>
+      <Link href="/signup">
         <button
           style={{
             display: 'flex',
@@ -37,11 +41,13 @@ import { MdOutlineAccountCircle, MdOutlinePersonAddAlt } from 'react-icons/md';
             borderRadius: '5px',
             border: 'none',
             cursor: 'pointer',
-          }}
+          }}           
         >
           <MdOutlinePersonAddAlt />
           新規会員登録
         </button>
+      </Link>
+      <Link href="/login">
         <button
           style={{
             display: 'flex',
@@ -59,6 +65,7 @@ import { MdOutlineAccountCircle, MdOutlinePersonAddAlt } from 'react-icons/md';
           <MdOutlineAccountCircle />
           ログイン
         </button>
+        </Link>
       </div>
     </nav>
   );
