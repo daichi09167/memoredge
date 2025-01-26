@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Card, Input, Stack, Box } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
 import { Checkbox } from "@/components/ui/checkbox"
+import { PasswordInput } from "./password-input"
 
 export const CardWithForm2: React.FC = () => (
   <Box
@@ -21,12 +22,12 @@ export const CardWithForm2: React.FC = () => (
         <Stack gap={4} width="full">
           {/* メールアドレス */}
           <Field label="メールアドレス">
-            <Input type="email" />
+            <Input type="email"  placeholder="XXXXX@com"/>
           </Field>
 
           {/* パスワード */}
           <Field label="パスワード">
-            <Input type="password" />
+            <PasswordInput />
           </Field>
         </Stack>
       </Card.Body>
