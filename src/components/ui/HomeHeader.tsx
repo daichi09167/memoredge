@@ -16,7 +16,7 @@ import { Avatar, AvatarGroup } from "@/components/ui/avatar";
     
       }}
     >
-      <Link href="/">
+      <Link href="/dashboard">
       <div
         style={{
           fontWeight: 'bold',
@@ -27,12 +27,8 @@ import { Avatar, AvatarGroup } from "@/components/ui/avatar";
         MemorEdge
       </div>
       </Link>
-        {/* アバターグループ */}
-        <AvatarGroup>
-          <Avatar>
-            <img src="/path-to-avatar.jpg" alt="User Avatar" />
-          </Avatar>
-        </AvatarGroup>
+        {/* アバタ- */}
+          <Avatar></Avatar>
     </nav>
   );
 };

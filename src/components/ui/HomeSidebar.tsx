@@ -1,35 +1,101 @@
-import {
-    Flex,
-    Input,
-    InputGroup,
-    InputLeftElement,
-    Button,
-    Icon,
-  } from '@chakra-ui/react';
-  import { SearchIcon } from '@chakra-ui/icons';
-  
-  export default function HomeSidebar() {
-    return (
-      <Flex
-        direction="column"
-        alignItems="center"
-        w="370px" // 幅を指定
-        h="819px" // 高さを指定
-        bg="gray.100" // 背景色を調整
-        p={4} // 余白を調整
+"use client";   
+import { MdAdd, MdCheck, MdOutlineSearch } from "react-icons/md";
+import { Field } from "@/components/ui/field";
+
+export default function Sidebar() {
+  // SearchInputについて
+  const SearchInput = () => (
+    <Field>
+      <MdOutlineSearch
+        style={{
+          position: "absolute",
+          top: "0.625rem",
+          left: "0.75rem",
+          color: "#6B7280",
+          fontSize: "1.25rem",
+        }}
+      />
+      <input
+        type="text"
+        placeholder="Search"
+        style={{
+          width: "100%",
+          padding: "0.5rem 0.75rem 0.5rem 2.5rem",
+          borderRadius: "0.5rem",
+          border: "1px solid #D1D5DB",
+          color: "#374151",
+          outline: "none",
+          transition: "border-color 0.2s, box-shadow 0.2s",
+        }}
+        onFocus={(e) => {
+          e.target.style.borderColor = "#FB923C";
+          e.target.style.boxShadow = "0 0 0 2px rgba(251, 146, 60, 0.5)";
+        }}
+        onBlur={(e) => {
+          e.target.style.borderColor = "#D1D5DB";
+          e.target.style.boxShadow = "none";
+        }}
+      />
+    </Field>
+  );
+
+  // Button コンポーネント
+  const Button = ({
+    icon: Icon,
+    text,
+    onHoverColor,
+  }: {
+    icon: React.ElementType;
+    text: string;
+    onHoverColor: string;
+  }) => (
+    <button
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "0.5rem",
+        backgroundColor: "#FB923C",
+        color: "#FFFFFF",
+        padding: "0.5rem 1rem",
+        borderRadius: "0.5rem",
+        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+        border: "none",
+        cursor: "pointer",
+        transition: "background-color 0.2s",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = onHoverColor)}
+      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#FB923C")}
+    >
+      <Icon style={{ fontSize: "1rem" }} />
+      <span style={{ fontSize: "0.875rem" }}>{text}</span>
+    </button>
+  );
+
+  return (
+    <div
+      style={{
+        backgroundColor: "#FAF9F6",
+        height: "100vh",
+        width: "16rem",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: "1.5rem 0",
+      }}
+    >
+      <div style={{ width: "91.6667%", marginBottom: "2rem" }}>
+        <SearchInput />
+      </div>
+      <div
+        style={{
+          width: "91.6667%",
+          display: "flex",
+          justifyContent: "space-around",
+        }}
       >
-        <InputGroup mb={4}>
-          <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
-          <Input type="text" placeholder="Search" />
-        </InputGroup>
-        <Flex direction="column" alignItems="center">
-          <Button colorScheme="orange" variant="solid" mb={2}>
-            クイズ作成
-          </Button>
-          <Button colorScheme="orange" variant="solid">
-            登録する
-          </Button>
-        </Flex>
-      </Flex>
-    );
-  }
+        <Button icon={MdCheck} text="作成" onHoverColor="#F97316" />
+        <Button icon={MdAdd} text="登録" onHoverColor="#F97316" />
+      </div>
+    </div>
+  );
+}
