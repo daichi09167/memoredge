@@ -1,8 +1,10 @@
 "use client";   
 import { MdAdd, MdCheck, MdOutlineSearch } from "react-icons/md";
 import { Field } from "@/components/ui/field";
+import { useRouter } from "next/router";  // useRouter をインポート
 
 export default function Sidebar() {
+    const router = useRouter(); // useRouter を呼び出し
   // SearchInputについて
   const SearchInput = () => (
     <Field>
@@ -48,6 +50,7 @@ export default function Sidebar() {
     icon: React.ElementType;
     text: string;
     onHoverColor: string;
+    onClick: () => void;  // onClick イベントを受け取るように変更
   }) => (
     <button
       style={{
@@ -65,11 +68,16 @@ export default function Sidebar() {
       }}
       onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = onHoverColor)}
       onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#FB923C")}
+      onClick={onClick}  // ボタンクリック時に onClick イベントを呼び出し
     >
       <Icon style={{ fontSize: "1rem" }} />
       <span style={{ fontSize: "0.875rem" }}>{text}</span>
     </button>
   );
+  // 登録ページに遷移する関数
+  const handleRegisterClick = () => {
+    router.push("/register");  // /register ページに遷移
+  };
 
   return (
     <div
@@ -93,8 +101,9 @@ export default function Sidebar() {
           justifyContent: "space-around",
         }}
       >
-        <Button icon={MdCheck} text="作成" onHoverColor="#F97316" />
-        <Button icon={MdAdd} text="登録" onHoverColor="#F97316" />
+        <Button icon={MdCheck} text="クイズ作成" onHoverColor="#F97316" onClick={() => {}}/>
+        {/* 登録ボタンに遷移処理を追加 */}
+        <Button icon={MdAdd} text="登録" onHoverColor="#F97316" onClick={handleRegisterClick} />
       </div>
     </div>
   );
