@@ -1,7 +1,7 @@
 "use client";   
 import { MdAdd, MdCheck, MdOutlineSearch } from "react-icons/md";
 import { Field } from "@/components/ui/field";
-import { useRouter } from "next/router";  // useRouter をインポート
+import { useRouter } from "next/navigation";  // useRouter をインポート
 
 export default function Sidebar() {
     const router = useRouter(); // useRouter を呼び出し
@@ -46,6 +46,7 @@ export default function Sidebar() {
     icon: Icon,
     text,
     onHoverColor,
+    onClick,  // onClick イベントを受け取るように変更
   }: {
     icon: React.ElementType;
     text: string;
