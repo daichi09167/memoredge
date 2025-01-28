@@ -57,7 +57,7 @@ export default function Sidebar() {
       style={{
         display: "flex",
         alignItems: "center",
-        gap: "0.5rem",
+        gap: "0.1rem",
         backgroundColor: "#FB923C",
         color: "#FFFFFF",
         padding: "0.5rem 1rem",
@@ -85,11 +85,11 @@ export default function Sidebar() {
       style={{
         backgroundColor: "#FAF9F6",
         height: "100vh",
-        width: "16rem",
+        width: "14rem",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: "1.5rem 0",
+        padding: "1rem 0",
       }}
     >
       <div style={{ width: "91.6667%", marginBottom: "2rem" }}>
