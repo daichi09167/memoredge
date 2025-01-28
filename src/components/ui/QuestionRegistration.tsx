@@ -1,26 +1,22 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Box, Button, Stack, Textarea, Card } from "@chakra-ui/react";
+import { Box, Button, Stack, Textarea, Card, Text } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
-import { Toaster, toaster } from "@/components/ui/toaster"
 
 export default function QuestionRegisterPage() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+  const [message, setMessage] = useState(""); // メッセージ表示用
+  const [messageType, setMessageType] = useState(""); // メッセージの種類 (success or error)
   const router = useRouter();
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!question || !answer) {
-      toaster.create({
-        title: "入力エラー",
-        description: "両方のフィールドを入力してください。",
-        type: "error",
-        duration: 3000,
-      });
+      setMessage("両方のフィールドを入力してください。");
+      setMessageType("error");
       return;
     }
 
@@ -32,29 +28,17 @@ export default function QuestionRegisterPage() {
       });
 
       if (response.ok) {
-        toaster.create({
-          title: "登録成功",
-          description: "問題と回答が正常に登録されました。",
-          type: "success",
-          duration: 3000,
-        });
-        router.push("/dashboard");
+        setMessage("問題と回答が正常に登録されました。");
+        setMessageType("success");
+        setTimeout(() => router.push("/dashboard"), 3000); // 成功後ダッシュボードへ遷移
       } else {
-        toaster.create({
-          title: "登録失敗",
-          description: "再度試してみてください。",
-          type: "error",
-          duration: 3000,
-        });
+        setMessage("登録に失敗しました。再度試してください。");
+        setMessageType("error");
       }
     } catch (error) {
       console.error("Error:", error);
-      toaster.create({
-        title: "エラー発生",
-        description: "問題が発生しました。再度試してください。",
-        type: "error",
-        duration: 3000,
-      });
+      setMessage("エラーが発生しました。再度お試しください。");
+      setMessageType("error");
     }
   };
 
@@ -92,6 +76,13 @@ export default function QuestionRegisterPage() {
                 onChange={(e) => setAnswer(e.target.value)}
               />
             </Field>
+
+            {/* メッセージ表示 */}
+            {message && (
+              <Text color={messageType === "success" ? "green.500" : "red.500"}>
+                {message}
+              </Text>
+            )}
           </Stack>
         </Card.Body>
         <Card.Footer display="flex" justifyContent="flex-end" gap={2}>
@@ -117,9 +108,7 @@ export default function QuestionRegisterPage() {
               borderRadius: "5px",
               cursor: "pointer",
             }}
-            
             onClick={handleCancel}
-            
           >
             キャンセル
           </Button>
@@ -128,7 +117,3 @@ export default function QuestionRegisterPage() {
     </Box>
   );
 }
-function useToast() {
-    throw new Error("Function not implemented.");
-}
-

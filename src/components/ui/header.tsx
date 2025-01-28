@@ -9,9 +9,8 @@ import { MdOutlineAccountCircle, MdOutlinePersonAddAlt } from 'react-icons/md';
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: '#FFF6E8',
+        backgroundColor: '#ffedd5',
         padding: '10px 20px',
-        borderBottom: '1px solid #FFECD2',
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
     
       }}

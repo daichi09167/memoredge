@@ -26,7 +26,7 @@ const CenteredHeading: React.FC<CenteredHeadingProps> = ({ text, subText }) => {
         <p>
         <Highlight
         query={["MemorEdge(メモレッジ)", "暗記学習", "アウトプット", "記憶を定着", "学習効果"]}
-        styles={{ px: "0.5", bg: "teal.muted" }}>
+        styles={{ fontWeight: "semibold", color: "red.500" }}>
             MemorEdge(メモレッジ)では、単語学習やその他の問題・回答を登録することで、暗記学習を促進し、アウトプットを加速させます。効率的に記憶を定着させ、学習効果を最大化するための最適なサポートを提供します。
          </Highlight>
         </p>

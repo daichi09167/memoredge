@@ -6,7 +6,14 @@ import CenteredHeading from '@/components/ui/CenteredHeading'; // インポー�
 
 const Page = () => {
   return (
-    <div>
+  <div
+    style={{
+      backgroundImage: `url("/blurry-gradient-haikei.svg")`, // 相対パス
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      minHeight: "100vh",
+    }}
+  >
       {/* ナビバー */}
       <Navbar />
 
