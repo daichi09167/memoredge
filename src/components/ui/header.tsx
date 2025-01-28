@@ -9,7 +9,7 @@ import { MdOutlineAccountCircle, MdOutlinePersonAddAlt } from 'react-icons/md';
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: '#ffedd5',
+        backgroundImage: `url("/blurry-gradient-haikei.svg")`, // 相対パス
         padding: '10px 20px',
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
     
@@ -20,7 +20,7 @@ import { MdOutlineAccountCircle, MdOutlinePersonAddAlt } from 'react-icons/md';
         style={{
           fontWeight: 'bold',
           fontSize: '24px',
-          color: '#E50000',
+          color: '#0F0404',
         }}
       >
         MemorEdge

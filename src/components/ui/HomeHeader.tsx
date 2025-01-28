@@ -9,7 +9,7 @@ import { Avatar, AvatarGroup } from "@/components/ui/avatar";
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: '#FFF6E8',
+        backgroundImage: `url("/blurry-gradient-haikei.svg")`, // 相対パス
         padding: '10px 20px',
         borderBottom: '1px solid #FFECD2',
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
@@ -21,7 +21,7 @@ import { Avatar, AvatarGroup } from "@/components/ui/avatar";
         style={{
           fontWeight: 'bold',
           fontSize: '24px',
-          color: '#E50000',
+          color: '#0F0404',
         }}
       >
         MemorEdge
