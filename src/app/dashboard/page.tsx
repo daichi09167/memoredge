@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import HomeNavber from '@/components/ui/HomeHeader';
 import Sidebar from '@/components/ui/HomeSidebar'; 
-import { Stack ,Box, Text, Flex} from "@chakra-ui/react";
+import { Stack ,Box, Text, Flex, IconButton} from "@chakra-ui/react";
 import { Flipper, Flipped } from "react-flip-toolkit";
 import { QuestionCard } from "@/components/ui/QuestionCard";
 import { SimpleGrid } from "@chakra-ui/react"
@@ -41,6 +41,17 @@ const DashboardPage = () => {
   const toggleFlip = (id: number) => {
     setFlipped((prev) => ({ ...prev, [id]: !prev[id] }));
   };
+  const handleDelete = async (id: number) => {
+    try {
+      // データベースから削除（API リクエストを送る）
+      await fetch(`/api/questions/`, { method: "DELETE" });
+
+      // フロントエンド側で削除処理
+      setQuestions((prev) => prev.filter((q) => q.id !== id));
+    } catch (error) {
+      console.error("削除エラー:", error);
+    }
+  };
 
   return (
     <Box>
@@ -69,7 +80,9 @@ const DashboardPage = () => {
                     answer={q.answer}
                     flipped={!!flipped[q.id]}
                     onClick={() => toggleFlip(q.id)}
-                  />
+                    onDelete={handleDelete}
+                    
+                    />
                 </Flipped>
              
               ))}

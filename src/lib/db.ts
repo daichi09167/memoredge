@@ -17,3 +17,4 @@ export const query = async (text: string, params?: any[]) => {
       (await pool.connect()).release();
     }
   };
+export { pool };

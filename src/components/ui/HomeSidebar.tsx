@@ -102,7 +102,7 @@ export default function Sidebar() {
           justifyContent: "space-around",
         }}
       >
-        <Button icon={MdCheck} text="クイズ作成" onHoverColor="#F97316" onClick={() => {}}/>
+
         {/* 登録ボタンに遷移処理を追加 */}
         <Button icon={MdAdd} text="登録" onHoverColor="#F97316" onClick={handleRegisterClick} />
       </div>
