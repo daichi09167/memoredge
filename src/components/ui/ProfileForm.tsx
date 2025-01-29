@@ -12,10 +12,27 @@ import {
 
 
 export const ProfileForm = () => {
+  const fileInputRef = useRef<HTMLInputElement>(null); // ファイル入力要素の参照
   const [username, setUsername] = useState("");
+  const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(null);  // 画像プレビューの状態管理
+
   const handleSave = () => {
     alert(`ユーザー名「${username}」が保存されました！`);
   };
+  
+  // ファイル選択時の処理
+
+  const onFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);  // プレビュー用に画像を設定
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
      <Box
         display="flex"
@@ -36,28 +53,44 @@ export const ProfileForm = () => {
             <Stack gap={4} width="full">
                 {/* プロフィールの写真 */}
                 <center>
-                <MdOutlineAccountCircle size={200} />  
+                {imagePreview ? (
+                <Image 
+                  src={imagePreview as string}
+                  alt="Profile"
+                  borderRadius="full"
+                  boxSize="200px"
+                  objectFit="cover"
+                />
+              ) : (
+                <MdOutlineAccountCircle size={200}/>
+              )}
                 </center>
                 {/* ファイルアップロード */}
-                <FileUploadRoot accept={["image/png"]} maxFiles={1} >
-                 <FileUploadTrigger >
-                   <Button variant="outline" size="sm">
-                      Upload file
-                    </Button>
-                  </FileUploadTrigger>
-                    <FileUploadList showSize clearable/>              
-                    </FileUploadRoot>
+                
+                 
+                   <Button variant="outline" size="sm" onClick={() => fileInputRef.current && fileInputRef.current.click()}>
+                    画像を変更する
+                   </Button>
+                  <input
+                   ref={fileInputRef}
+                   type="file"
+                   accept="image/png,image/jpeg"
+                   onChange={onFileSelect}
+                   style={{ display: "none" }}
+                  />
                 
                
               {/* ユーザー名 */}
               <Field label="ユーザー名">
-                <Input  placeholder="たろう"/>
+                <Input  placeholder="たろう"
+                 value={username}
+                 onChange={(e) => setUsername(e.target.value)} />
               </Field>
             </Stack>
           </Card.Body>
           <Card.Footer display="flex" justifyContent="flex-end" gap={2}>
-            <Button>       
-                保存する
+            <Button onClick={handleSave}>       
+            保存する
             </Button>
           </Card.Footer>
         </Card.Root>
