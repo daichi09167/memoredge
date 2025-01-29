@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from "next/link"; // Link コンポーネントのインポート
-import { Avatar, AvatarGroup } from "@/components/ui/avatar";
+import { Avatar} from "@/components/ui/avatar";
+import { MdOutlineAccountCircle } from "react-icons/md";
 
  export const HomeNavbar = () => {
   return (
@@ -28,7 +29,9 @@ import { Avatar, AvatarGroup } from "@/components/ui/avatar";
       </div>
       </Link>
         {/* アバタ- */}
-          <Avatar></Avatar>
+        <Link href="/profile">
+        <Avatar/>
+          </Link>
     </nav>
   );
 };
