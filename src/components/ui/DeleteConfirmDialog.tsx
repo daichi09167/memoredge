@@ -8,7 +8,7 @@ type DeleteConfirmDialogProps = {
   onDelete: () => void;
 };
 
-export default function DeleteConfirmDialog({ isOpen, onClose, onDelete }: DeleteConfirmDialogProps) {
+export default function DeleteConfirmDialogmessage({ isOpen, onClose, onDelete }: DeleteConfirmDialogProps) {
   if (!isOpen) return null;
 
   return (
