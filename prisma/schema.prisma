@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    Int    @id @default(autoincrement())
+  email String @unique
+  name  String
+  image String?
+  emailVerified  DateTime? // メールアドレスの検証情報（必要）
+  accounts       Account[] // アカウント情報を保持する関連テーブル
+  sessions       Session[] // セッション情報
+
+  @@map("users") // テーブル名を指定する場合に利用
+}
+
+
+model Question {
+  id      Int    @id @default(autoincrement())
+  question String
+  answer  String
+
+  @@unique([question, answer])  // 質問と回答の組み合わせをユニークにする
+}
+
+
+model Account {
+  id                 Int      @id @default(autoincrement())
+  userId             Int
+  provider           String
+  providerAccountId  String
+  type               String
+  access_token       String? // OAuth のトークン情報など
+  refresh_token      String?
+  expires_at         Int?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId]) // アカウント識別のためのユニーク制約
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  sessionToken String   @unique
+  userId       Int
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+

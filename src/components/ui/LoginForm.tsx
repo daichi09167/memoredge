@@ -1,17 +1,10 @@
 "use client";
 import React from "react";
-import { Button, Card, Input, Stack, Box } from "@chakra-ui/react";
-import { Field } from "@/components/ui/field";
-import { PasswordInput } from "./password-input"
+import { Button, Card,} from "@chakra-ui/react";
 import { signIn } from "next-auth/react";
 
 export const CardWithForm2: React.FC = () => (
-  <Box
-    display="flex"
-    alignItems="center"
-    justifyContent="center"
-    minHeight="100vh"
-  >
+  
     <Card.Root maxW="sm" boxShadow="lg" borderRadius="md" bg="amber.50">
       <Card.Header>
         <Card.Title>MemorEdgeにログインしよう</Card.Title>
@@ -39,7 +32,6 @@ export const CardWithForm2: React.FC = () => (
       <Card.Footer display="flex" justifyContent="flex-end" gap={2}>
       </Card.Footer>
     </Card.Root>
-  </Box>
 );
 
 export default CardWithForm2;

@@ -2,8 +2,11 @@ import React from 'react';
 import Link from "next/link"; // Link コンポーネントのインポート
 import { Avatar} from "@/components/ui/avatar";
 import { MdOutlineAccountCircle } from "react-icons/md";
+import { useSession } from "next-auth/react";  // useSession フックをインポート
 
- export const HomeNavbar = () => {
+
+export const HomeNavbar = () => {
+  const { data: session } = useSession();
   return (
     <nav
       style={{
@@ -28,9 +31,13 @@ import { MdOutlineAccountCircle } from "react-icons/md";
         MemorEdge
       </div>
       </Link>
-        {/* アバタ- */}
+        {/* Google アカウントのアイコンを表示 */}
         <Link href="/profile">
-        <Avatar/>
+        {session?.user?.image ? (
+        <Avatar src={session.user.image}/>
+      ) : (
+        <MdOutlineAccountCircle size={32} />  
+      )}
           </Link>
     </nav>
   );

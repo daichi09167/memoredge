@@ -6,6 +6,7 @@ import { Stack ,Box, Text, Flex, IconButton} from "@chakra-ui/react";
 import { Flipper, Flipped } from "react-flip-toolkit";
 import QuestionCard  from "@/components/ui/QuestionCard";
 import { SimpleGrid } from "@chakra-ui/react"
+import { SessionProvider } from "next-auth/react";
 
 // データ型
 type Question = {
@@ -56,7 +57,9 @@ const DashboardPage = () => {
   return (
     <Box>
       {/* ヘッダー */}
+      <SessionProvider>
       <HomeNavber />
+      </SessionProvider>
 
       <Flex>
         {/* サイドバー */}

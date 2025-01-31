@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { pool, query } from "@/lib/db";
+import prisma from "@/lib/prisma";  // Prismaクライアントをインポート
+
 
 // POST: 質問と回答をデータベースに登録
 export async function POST(req: Request) {
@@ -14,14 +15,14 @@ export async function POST(req: Request) {
       );
     }
 
-    // PostgreSQLにデータを挿入
-    const result = await query(
-      "INSERT INTO questions (question, answer) VALUES ($1, $2) RETURNING *",
-      [question, answer]
-    );
+    // Prismaを使って質問と回答をデータベースに挿入
+    const result = await prisma.question.create({
+      data: { question, answer },
+    });
+
 
     return NextResponse.json(
-      { message: "Question registered successfully!", data: result.rows[0] },
+      { message: "Question registered successfully!", data: result},
       { status: 201 }
     );
   } catch (error) {
@@ -36,9 +37,9 @@ export async function POST(req: Request) {
 // GET: 質問データを取得
 export async function GET() {
   try {
-    const result = await query("SELECT * FROM questions");
-
-    return NextResponse.json(result.rows, { status: 200 });
+    // Prismaを使って質問を取得
+    const questions = await prisma.question.findMany();
+    return NextResponse.json(questions, { status: 200 });
   } catch (error) {
     console.error("Error fetching questions:", error);
     return NextResponse.json(
@@ -49,45 +50,28 @@ export async function GET() {
 }
 
 // DELETE: 質問データを削除
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest){
   const { question, answer } = await req.json(); // body から question と answer を取得
-  console.log("Received question:", question, "Received answer:", answer);  // 受け取った値をログに出力
   if (!question || !answer) {
     return NextResponse.json({ message: "Question and answer are required." }, { status: 400 });
   }
 
-  const client = await pool.connect();
-  try {
-    console.log(`Deleting question with question: "${question}" and answer: "${answer}"`);  // ログを出力
-
-    await client.query("BEGIN");
-
-    // DELETE クエリ実行
-  // `question` と `answer` に基づいて削除を実行
-  const result = await client.query(
-    "DELETE FROM questions WHERE question = $1 AND answer = $2 RETURNING *",
-    [question, answer]
-  );
-  console.log("Delete result:", result);  // 削除結果のログを出力
-  
-  if (result.rowCount === 0) {
-    console.log(`No record found with question: "${question}" and answer: "${answer}"`);  // 該当データがない場合
-    return NextResponse.json({ message: "Question and Answer not found." }, { status: 404 });
+    try {
+      // Prismaを使って質問を削除
+      const deletedQuestion = await prisma.question.delete({
+        where: {
+          question_answer: {
+            question: question,
+            answer: answer,
+          },
+        },
+      });
+      return NextResponse.json({ success: true, deletedData: deletedQuestion });
+    } catch (error) {
+      console.error("Error deleting question:", error);
+      return NextResponse.json(
+        { message: "An error occurred while deleting the question.", error: error instanceof Error ? error.message : "Unknown error" },
+        { status: 500 }
+      );
+    }
   }
-
-    await client.query("COMMIT");
-
-    
-    return NextResponse.json({ success: true, deletedData: result.rows[0] });
-  } catch (error) {
-    await client.query("ROLLBACK");
-    console.error("Error deleting question:", error);  // エラーをログに出力
-
-    return NextResponse.json(
-      { message: "An error occurred while deleting the question.", error: error instanceof Error ? error.message : "Unknown error" },
-      { status: 500 }
-    );
-  } finally {
-    client.release();  // クライアント接続の解放
-  }
-}

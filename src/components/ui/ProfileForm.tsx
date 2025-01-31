@@ -1,45 +1,40 @@
 "use client";
-import { useState,useRef } from "react";
+import { useState, useEffect } from "react";
 import { MdOutlineAccountCircle } from "react-icons/md";
-import { Button, Card, Input, Stack, Box ,} from "@chakra-ui/react";
-import {
-    FileUploadList,
-    FileUploadRoot,
-    FileUploadTrigger,
- } from "@/components/ui/file-upload";
+import { Button, Card, Input, Stack, Box ,Image, Text,Center} from "@chakra-ui/react";
  import { Field } from "@/components/ui/field";
- import { Image } from "@chakra-ui/react"
+ import { useSession } from "next-auth/react";
+ import { useRouter } from "next/navigation";  // 追加
 
 
 export const ProfileForm = () => {
-  const fileInputRef = useRef<HTMLInputElement>(null); // ファイル入力要素の参照
-  const [username, setUsername] = useState("");
-  const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(null);  // 画像プレビューの状態管理
+  const { data: session } = useSession();
+  const router = useRouter();  // 追加
+  
+  const [username, setUsername] = useState<string>("");
+  const [imagePreview,setImagePreview] = useState<string | ArrayBuffer | null>(null);
+  const [message, setMessage] = useState<string>(""); // メッセージを表示するための状態
+  
+
+  useEffect(() => {
+    if (session?.user) {
+      setUsername(session.user.name || "");
+      setImagePreview(session.user.image || null);
+    }
+  }, [session]);
 
   const handleSave = () => {
-    alert(`ユーザー名「${username}」が保存されました！`);
-  };
-  
-  // ファイル選択時の処理
+    // ユーザー名を保存後、メッセージを表示
+    setMessage(`ユーザー名「${username}」が保存されました！`);
 
-  const onFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);  // プレビュー用に画像を設定
-      };
-      reader.readAsDataURL(file);
-    }
+    // 少し待ってからダッシュボードにリダイレクト
+    setTimeout(() => {
+      router.push("/dashboard");  // ダッシュボードページにリダイレクト
+    }, 2000);  // 2秒後にリダイレクト（保存メッセージが見れる時間を確保）
   };
 
   return (
-     <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        minHeight="100vh"
-      >
+     <Center>
         <Card.Root maxW="sm" boxShadow="lg" borderRadius="md" bg="amber.50">
           <Card.Header>
             <center>
@@ -65,22 +60,7 @@ export const ProfileForm = () => {
                 <MdOutlineAccountCircle size={200}/>
               )}
                 </center>
-                {/* ファイルアップロード */}
-                
-                 
-                   <Button variant="outline" size="sm" onClick={() => fileInputRef.current && fileInputRef.current.click()}>
-                    画像を変更する
-                   </Button>
-                  <input
-                   ref={fileInputRef}
-                   type="file"
-                   accept="image/png,image/jpeg"
-                   onChange={onFileSelect}
-                   style={{ display: "none" }}
-                  />
-                
-               
-              {/* ユーザー名 */}
+               {/* ユーザー名 */}
               <Field label="ユーザー名">
                 <Input  placeholder="たろう"
                  value={username}
@@ -89,12 +69,23 @@ export const ProfileForm = () => {
             </Stack>
           </Card.Body>
           <Card.Footer display="flex" justifyContent="flex-end" gap={2}>
+          <Stack gap={4} width="full">
             <Button onClick={handleSave}>       
             保存する
             </Button>
+              {/* 保存メッセージ */}
+             {message && (
+               <Box mt={4} textAlign="center">
+              <Text color={"green.400"}>{message}</Text>
+               </Box>
+              )
+              }
+          </Stack>
           </Card.Footer>
         </Card.Root>
-      </Box>
+      </Center>
+
+    
     );
     
       
