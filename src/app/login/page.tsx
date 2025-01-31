@@ -2,6 +2,7 @@ import React from "react";
 import {CardWithForm2} from "@/components/ui/LoginForm";
 import Header from "@/components/ui/header";
 import { Center, Stack } from "@chakra-ui/react"
+import { signIn } from "next-auth/react";
 
 const LoginPage: React.FC = () => {
   return (
