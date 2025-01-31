@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from "next/link"; // Link コンポーネントのインポート
 import { MdOutlineAccountCircle, MdOutlinePersonAddAlt } from 'react-icons/md';
+import { Button } from "@chakra-ui/react"
 
  export const Navbar = () => {
   return (
@@ -28,23 +29,10 @@ import { MdOutlineAccountCircle, MdOutlinePersonAddAlt } from 'react-icons/md';
       </Link>
       <div style={{ display: 'flex', gap: '10px' }}>
       <Link href="/login">
-        <button
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '5px',
-            backgroundColor: 'transparent',
-            color: 'black',
-            fontWeight: 'bold',
-            padding: '5px 10px',
-            borderRadius: '5px',
-            border: '1px solid #FFCF56',
-            cursor: 'pointer',
-          }}
-        >
+        <Button variant="surface" colorScheme="blackAlpha">
           <MdOutlineAccountCircle />
           ログイン
-        </button>
+        </Button>
         </Link>
       </div>
     </nav>

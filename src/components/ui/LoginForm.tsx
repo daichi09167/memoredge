@@ -1,7 +1,9 @@
+"use client";
 import React from "react";
 import { Button, Card, Input, Stack, Box } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
 import { PasswordInput } from "./password-input"
+import { signIn } from "next-auth/react";
 
 export const CardWithForm2: React.FC = () => (
   <Box
@@ -14,24 +16,11 @@ export const CardWithForm2: React.FC = () => (
       <Card.Header>
         <Card.Title>MemorEdgeにログインしよう</Card.Title>
         <Card.Description>
-         Fill in the form below to log in.
+         Let's sign in with your Google account."
         </Card.Description>
       </Card.Header>
       <Card.Body>
-        <Stack gap={4} width="full">
-          {/* メールアドレス */}
-          <Field label="ユーザー名">
-            <Input  placeholder="たろう"/>
-          </Field>
-
-          {/* パスワード */}
-          <Field label="パスワード">
-            <PasswordInput />
-          </Field>
-        </Stack>
-      </Card.Body>
-      <Card.Footer display="flex" justifyContent="flex-end" gap={2}>
-        <Button 
+      <Button 
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -43,9 +32,11 @@ export const CardWithForm2: React.FC = () => (
             borderRadius: '5px',
             border: 'none',
             cursor: 'pointer',
-          }}>       
-            ログインする
+          }} onClick={() => signIn("google", { callbackUrl: "/dashboard" })}>       
+            Googleでログイン
           </Button>
+      </Card.Body>
+      <Card.Footer display="flex" justifyContent="flex-end" gap={2}>
       </Card.Footer>
     </Card.Root>
   </Box>
