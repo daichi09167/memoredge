@@ -16,7 +16,7 @@ datasource db {
 model User {
   id    Int    @id @default(autoincrement())
   email String @unique
-  name  String
+  name  String?
   image String?
   emailVerified  DateTime? // メールアドレスの検証情報（必要）
   accounts       Account[] // アカウント情報を保持する関連テーブル
@@ -41,13 +41,14 @@ model Account {
   provider           String
   providerAccountId  String
   type               String
-  access_token       String? // OAuth のトークン情報など
+  access_token       String?
   refresh_token      String?
   expires_at         Int?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId]) // アカウント識別のためのユニーク制約
+  @@map("accounts")
 }
 
 model Session {
@@ -57,5 +58,6 @@ model Session {
   expires      DateTime
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("sessions")
 }
 

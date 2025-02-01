@@ -3,6 +3,14 @@ import Link from "next/link"; // Link コンポーネントのインポート
 import { Avatar} from "@/components/ui/avatar";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import { useSession } from "next-auth/react";  // useSession フックをインポート
+import { Button } from "@chakra-ui/react";
+import {
+  MenuContent,
+  MenuItem,
+  MenuRoot,
+  MenuTrigger,
+} from "@/components/ui/menu";
+
 
 
 export const HomeNavbar = () => {
@@ -32,13 +40,25 @@ export const HomeNavbar = () => {
       </div>
       </Link>
         {/* Google アカウントのアイコンを表示 */}
-        <Link href="/profile">
+        <MenuRoot>
+         <MenuTrigger asChild>
+        <Button>
         {session?.user?.image ? (
         <Avatar src={session.user.image}/>
       ) : (
         <MdOutlineAccountCircle size={32} />  
       )}
-          </Link>
+      </Button>
+      </MenuTrigger>
+      <MenuContent>
+        <MenuItem asChild value="profile">
+          <Link href="/profile">プロフィール</Link>
+        </MenuItem>
+        <MenuItem asChild value="logout">
+          <Link href="/api/auth/signout">ログアウト</Link>
+        </MenuItem>
+      </MenuContent>
+          </MenuRoot>
     </nav>
   );
 };

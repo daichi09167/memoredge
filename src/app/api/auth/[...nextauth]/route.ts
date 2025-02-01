@@ -28,29 +28,51 @@ const handler = NextAuth({
   },
   callbacks: {
     async signIn({ user, account }) {
-      // Google認証を使用してサインインした場合の処理
-      if (account && account.provider === "google") {
+      if (account?.provider === "google") {
         const existingUser = await prisma.user.findUnique({
           where: { email: user.email ?? undefined },
+          include: { accounts: true },
         });
 
-        // 既存のユーザーがいなければ新しく作成
         if (!existingUser) {
+          // 新規ユーザー登録時にアカウント情報も登録
           await prisma.user.create({
             data: {
               email: user.email!,
               name: user.name!,
               image: user.image || null,
+              accounts: {
+                create: {
+                  provider: account.provider,
+                  providerAccountId: account.providerAccountId,
+                  type: account.type,
+                },
+              },
             },
           });
           return true;
         }
 
-        // 既存ユーザーがいた場合、そのユーザーとGoogleアカウントをリンク
-        return true;
-      }
-      return false;
-    },
+        // 既存ユーザーがいる場合でもアカウント情報がなければリンクエラー
+    const linkedAccount = await prisma.account.findFirst({
+      where: {
+        userId: existingUser.id,
+        provider: account.provider,
+        providerAccountId: account.providerAccountId,
+      },
+    });
+    if (!linkedAccount) {
+      return "/auth/error?error=account_not_linked"; // カスタムエラー
+    }
+    return true;
+  }
+  return false;
+},
+    
+
+        
+
+      
     async session({ session, user }) {
       if (session.user) {
         session.user.id = user.id; // セッションにユーザーIDを含める
