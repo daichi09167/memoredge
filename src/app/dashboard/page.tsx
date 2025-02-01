@@ -18,12 +18,32 @@ type Question = {
 const DashboardPage = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [flipped, setFlipped] = useState<{ [key: number]: boolean }>({});
+  const [userId, setUserId] = useState<number | null>(null);  // userId を状態として管理
+
+
+
+
+  // 例: NextAuth.js を使ってユーザーのセッション情報から userId を取得する
+  useEffect(() => {
+    const fetchUserId = async () => {
+      // ここではセッションの取得例を示していますが、実際の方法は NextAuth.js の API を使って取得してください。
+      const sessionResponse = await fetch("/api/auth/session");
+      const sessionData = await sessionResponse.json();
+      if (sessionData?.user?.id) {
+        setUserId(sessionData.user.id);
+      }
+    };
+
+    fetchUserId();
+  }, []);
 
   // データの取得
   useEffect(() => {
     const fetchQuestions = async () => {
+      if (!userId) return; // userId がない場合はリクエストしない
+      
       try {
-        const response = await fetch("/api/questions");
+        const response = await fetch(`/api/questions?userId=${userId}`);
         if (response.ok) {
           const data = await response.json();
           setQuestions(data);
@@ -36,7 +56,7 @@ const DashboardPage = () => {
     };
 
     fetchQuestions();
-  }, []);
+  }, [userId]);
 
   // カードのフリップトグル
   const toggleFlip = (id: number) => {
@@ -60,7 +80,6 @@ const DashboardPage = () => {
       <SessionProvider>
       <HomeNavber />
       </SessionProvider>
-
       <Flex>
         {/* サイドバー */}
         <Box  width={{ base: "100%", md: "20%" }}bg="gray.50">
@@ -93,6 +112,7 @@ const DashboardPage = () => {
           </Flipper>
         </Box>
       </Flex>
+      
     </Box>
   );
 };

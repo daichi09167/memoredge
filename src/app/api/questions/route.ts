@@ -5,45 +5,64 @@ import prisma from "@/lib/prisma";  // Prismaクライアントをインポー�
 // POST: 質問と回答をデータベースに登録
 export async function POST(req: Request) {
   try {
-    const { question, answer } = await req.json();
+    const { question, answer ,userId } = await req.json();
 
     // 入力値のバリデーション
-    if (!question || !answer) {
+    if (!question || !answer || !userId) {
       return NextResponse.json(
-        { message: "Question and Answer are required." },
+        { message: "Question, Answer, and User ID are required" },
         { status: 400 }
       );
     }
 
     // Prismaを使って質問と回答をデータベースに挿入
     const result = await prisma.question.create({
-      data: { question, answer },
+      data: {
+        question, 
+        answer,
+        userId,
+      },
     });
 
 
     return NextResponse.json(
-      { message: "Question registered successfully!", data: result},
+      { message: "Question registered successfully!", data: question},
       { status: 201 }
     );
   } catch (error) {
-    console.error("Error saving question:", error);
+    console.error("Error saving question:", (error as any)?.message || "Unknown error");
     return NextResponse.json(
-      { message: "An error occurred while registering the question.", error: (error as any).message },
+      { message: "An error occurred while registering the question.", error: (error as Error)?.message || "Unknown error"  },
       { status: 500 }
     );
   }
 }
 
 // GET: 質問データを取得
-export async function GET() {
-  try {
-    // Prismaを使って質問を取得
-    const questions = await prisma.question.findMany();
+export async function GET(req: NextRequest) {
+  const url = new URL(req.url);
+  const userId = url.searchParams.get("userId");
+
+
+  if (!userId) {
+    return NextResponse.json(
+      { message: "User ID is required." },
+      { status: 400 }
+      );
+    }
+
+    try {
+    // Prismaを使ってユーザー固有の質問を取得
+    const questions = await prisma.question.findMany({
+      where: {
+        userId: parseInt(userId), // `userId` を整数に変換
+      },
+    });
     return NextResponse.json(questions, { status: 200 });
   } catch (error) {
     console.error("Error fetching questions:", error);
     return NextResponse.json(
-      { message: "An error occurred while fetching questions.", error: (error as any).message },
+      { message: "An error occurred while fetching questions.", error:  error instanceof Error ? error.message : "Unknown error" },
       { status: 500 }
     );
   }
@@ -51,18 +70,19 @@ export async function GET() {
 
 // DELETE: 質問データを削除
 export async function DELETE(req: NextRequest){
-  const { question, answer } = await req.json(); // body から question と answer を取得
-  if (!question || !answer) {
-    return NextResponse.json({ message: "Question and answer are required." }, { status: 400 });
+  const { question, answer , userId} = await req.json(); // body から question と answerとuserIdを取得
+  if (!question || !answer || !userId) {
+    return NextResponse.json({ message: "Question, answer, and userId are required." }, { status: 400 });
   }
 
     try {
-      // Prismaを使って質問を削除
+      // Prismaを使って質問を削除（ユーザーIDを追加して、特定のユーザーの質問を削除）
       const deletedQuestion = await prisma.question.delete({
         where: {
-          question_answer: {
-            question: question,
+          userId_answer_question: {
+            userId: userId,
             answer: answer,
+            question: question,
           },
         },
       });

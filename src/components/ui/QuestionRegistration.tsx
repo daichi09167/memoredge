@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Box, Button, Stack, Textarea, Card, Text } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
+import { useSession } from "next-auth/react"; // useSession をインポート
 
 export default function QuestionRegisterPage() {
   const [question, setQuestion] = useState("");
@@ -10,6 +11,8 @@ export default function QuestionRegisterPage() {
   const [message, setMessage] = useState(""); // メッセージ表示用
   const [messageType, setMessageType] = useState(""); // メッセージの種類 (success or error)
   const router = useRouter();
+  // NextAuthでセッションを取得
+  const { data: session, status } = useSession();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,11 +23,20 @@ export default function QuestionRegisterPage() {
       return;
     }
 
+     // ユーザーがログインしていない場合、エラーメッセージを表示
+     if (!session?.user?.id) {
+      setMessage("ログインしていないユーザーです。ログインしてください。");
+      setMessageType("error");
+      return;
+    }
+
+    
+
     try {
       const response = await fetch("/api/questions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, answer }),
+        body: JSON.stringify({ question, answer , userId: session.user.id }), // userId をセッションから取得
       });
 
       if (response.ok) {

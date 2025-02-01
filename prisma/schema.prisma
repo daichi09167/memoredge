@@ -33,8 +33,8 @@ model Question {
   answer  String
   userId    Int
   user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  @@unique([userId, question])  // 同じユーザー内で質問はユニークにする
+
+  @@unique([userId, answer,question])  // 同じユーザー内で質問はユニークにする
 
 }
 
