@@ -28,10 +28,9 @@ const handler = NextAuth({
   },
   callbacks: {
     async signIn({ user, account }) {
-      if (account?.provider === "google") {
+      if (account && account.provider === "google"){
         const existingUser = await prisma.user.findUnique({
           where: { email: user.email ?? undefined },
-          include: { accounts: true },
         });
 
         if (!existingUser) {
@@ -53,31 +52,39 @@ const handler = NextAuth({
           return true;
         }
 
-        // 既存ユーザーがいる場合でもアカウント情報がなければリンクエラー
-    const linkedAccount = await prisma.account.findFirst({
+     // 既存のユーザーがいた場合、Googleアカウントとリンクされているかを確認
+     const existingAccount = await prisma.account.findUnique({
       where: {
-        userId: existingUser.id,
-        provider: account.provider,
-        providerAccountId: account.providerAccountId,
+        provider_providerAccountId: {
+          provider: account.provider,
+          providerAccountId: account.providerAccountId,
+        },
       },
     });
-    if (!linkedAccount) {
-      return "/auth/error?error=account_not_linked"; // カスタムエラー
-    }
-    return true;
-  }
-  return false;
-},
-    
 
-        
-
-      
-    async session({ session, user }) {
-      if (session.user) {
-        session.user.id = user.id; // セッションにユーザーIDを含める
+      // アカウントがリンクされていない場合、リンク処理
+      if (!existingAccount) {
+        await prisma.account.create({
+          data: {
+            userId: existingUser.id,
+            provider: account.provider,
+            providerAccountId: account.providerAccountId,
+            type: account.type,
+            access_token: account.access_token || "",
+            refresh_token: account.refresh_token || "",
+            expires_at: account.expires_at || 0,
+          },
+        });
       }
-      return session;
+      return true;
+    }
+    return false;
+  },
+  async session({ session, user }) {
+    if (session.user) {
+      session.user.id = user.id; // セッションにユーザーIDを含める
+    }
+    return session;
     },
   },
 });
