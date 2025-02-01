@@ -42,7 +42,7 @@ export const HomeNavbar = () => {
         {/* Google アカウントのアイコンを表示 */}
         <MenuRoot>
          <MenuTrigger asChild>
-        <Button>
+        <Button variant="outline" rounded="full">
         {session?.user?.image ? (
         <Avatar src={session.user.image}/>
       ) : (
@@ -56,6 +56,9 @@ export const HomeNavbar = () => {
         </MenuItem>
         <MenuItem asChild value="logout">
           <Link href="/api/auth/signout">ログアウト</Link>
+        </MenuItem>
+        <MenuItem asChild value="privacy-policy">
+          <Link href="/privacy-policy">プライバシーポリシー</Link>
         </MenuItem>
       </MenuContent>
           </MenuRoot>
