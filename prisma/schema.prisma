@@ -21,6 +21,7 @@ model User {
   emailVerified  DateTime? // メールアドレスの検証情報（必要）
   accounts       Account[] // アカウント情報を保持する関連テーブル
   sessions       Session[] // セッション情報
+  questions Question[] // ユーザーの質問リレーション
 
   @@map("users") // テーブル名を指定する場合に利用
 }
@@ -30,8 +31,11 @@ model Question {
   id      Int    @id @default(autoincrement())
   question String
   answer  String
+  userId    Int
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, question])  // 同じユーザー内で質問はユニークにする
 
-  @@unique([question, answer])  // 質問と回答の組み合わせをユニークにする
 }
 
 
