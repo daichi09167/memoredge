@@ -1,4 +1,4 @@
-import NextAuth, { Session } from "next-auth";
+import NextAuth, { NextAuthOptions }from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prisma";
@@ -14,7 +14,7 @@ declare module "next-auth" {
   }
 }
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions =({
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -26,6 +26,7 @@ const handler = NextAuth({
     signIn: "/login", // ログインページ
     newUser: "/dashboard", // 新規ユーザーリダイレクト
   },
+  secret: process.env.NEXTAUTH_SECRET,  // 必ずsecretを設定
   callbacks: {
     async signIn({ user, account }) {
       if (account && account.provider === "google"){
@@ -88,5 +89,6 @@ const handler = NextAuth({
     },
   },
 });
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

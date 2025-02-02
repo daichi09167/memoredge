@@ -26,11 +26,24 @@ const DashboardPage = () => {
   // 例: NextAuth.js を使ってユーザーのセッション情報から userId を取得する
   useEffect(() => {
     const fetchUserId = async () => {
-      // ここではセッションの取得例を示していますが、実際の方法は NextAuth.js の API を使って取得してください。
+      try{
       const sessionResponse = await fetch("/api/auth/session");
+        // レスポンスが空でないか確認
+    if (!sessionResponse.ok || sessionResponse.status === 204) {
+      throw new Error('No session or empty response');
+    }
+
+      if (!sessionResponse.ok) {
+        throw new Error('Failed to fetch session');
+      }
+  
       const sessionData = await sessionResponse.json();
       if (sessionData?.user?.id) {
         setUserId(sessionData.user.id);
+      }
+    }
+      catch (error) {
+        console.error("Error fetching session:", error);
       }
     };
 
@@ -62,18 +75,34 @@ const DashboardPage = () => {
   const toggleFlip = (id: number) => {
     setFlipped((prev) => ({ ...prev, [id]: !prev[id] }));
   };
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: number, question: string, answer: string, userId: number) => {
     try {
-      // データベースから削除（API リクエストを送る）
-      await fetch(`/api/questions/`, { method: "DELETE" });
-
-      // フロントエンド側で削除処理
-      setQuestions((prev) => prev.filter((q) => q.id !== id));
+      // 削除対象の質問データをAPIリクエストに送信
+      const response = await fetch('/api/questions', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ question, answer, userId }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        // 削除成功後、質問リストを更新
+        setQuestions((prev) => prev.filter((q) => q.id !== id));
+        console.log('質問が削除されました:', data);
+      } else {
+        console.error('削除失敗:', data);
+      }
     } catch (error) {
-      console.error("削除エラー:", error);
+      console.error('削除エラー:', error);
     }
   };
-
+  
+  
+  
+  
   return (
     <Box>
       {/* ヘッダー */}
@@ -85,7 +114,6 @@ const DashboardPage = () => {
         <Box  width={{ base: "100%", md: "20%" }}bg="gray.50">
           <Sidebar />
         </Box>
-
         {/* メインコンテンツ */}
         <Box flex="1" padding={8}>
           <Text fontSize="2xl" fontWeight="bold" mb={4}>
@@ -102,7 +130,7 @@ const DashboardPage = () => {
                     answer={q.answer}
                     flipped={!!flipped[q.id]}
                     onClick={() => toggleFlip(q.id)}
-                    onDelete={handleDelete}
+                    onDelete={(id, question, answer) => handleDelete(id, question, answer, userId!)}
                     
                     />
                 </Flipped>

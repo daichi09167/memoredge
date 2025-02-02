@@ -11,31 +11,13 @@ type QuestionCardProps = {
   answer: string;
   flipped: boolean;
   onClick: () => void;
-  onDelete: (id: number) => void;
+  onDelete: (id: number, question: string, answer: string) => void;
 };
 
 export function QuestionCard({ id, question, answer, flipped, onClick, onDelete }: QuestionCardProps) {
   const { onOpen, onClose, open, onToggle } = useDisclosure();
-
-  const handleDelete = async () => {
-    try {
-      const response = await fetch(`/api/questions`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, answer }), // `question` と `answer` を送信
-        });
-        const responseBody = await response.text(); // レスポンスをテキストとして取得
-        console.log("Response body:", responseBody); // レスポンス内容を表示
-  
-        if (response.ok) {
-            onDelete(id);
-            onClose();
-          } else {
-            console.error("削除に失敗しました:", responseBody); // エラーメッセージを表示
-          }
-        } catch (error) {
-          console.error("削除中にエラーが発生しました:", error);
-        }
+  const handleDelete = () => {
+    onDelete(id, question, answer); // 親コンポーネントの削除関数を呼び出す
   };
   
 

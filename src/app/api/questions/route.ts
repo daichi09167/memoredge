@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";  // Prismaクライアントをインポート
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";  // 認証オプションをインポート
+import { getServerSession } from "next-auth/next";
 
 
 // POST: 質問と回答をデータベースに登録
@@ -69,29 +71,49 @@ export async function GET(req: NextRequest) {
 }
 
 // DELETE: 質問データを削除
-export async function DELETE(req: NextRequest){
-  const { question, answer , userId} = await req.json(); // body から question と answerとuserIdを取得
-  if (!question || !answer || !userId) {
-    return NextResponse.json({ message: "Question, answer, and userId are required." }, { status: 400 });
+export async function DELETE(req: NextRequest) {
+  const session = await getServerSession(authOptions); // セッションから取得
+
+  if (!req.body) {
+    return NextResponse.json({ message: "Request body is missing." }, { status: 400 });
   }
 
-    try {
-      // Prismaを使って質問を削除（ユーザーIDを追加して、特定のユーザーの質問を削除）
-      const deletedQuestion = await prisma.question.delete({
-        where: {
-          userId_answer_question: {
-            userId: userId,
-            answer: answer,
-            question: question,
-          },
-        },
-      });
-      return NextResponse.json({ success: true, deletedData: deletedQuestion });
-    } catch (error) {
-      console.error("Error deleting question:", error);
-      return NextResponse.json(
-        { message: "An error occurred while deleting the question.", error: error instanceof Error ? error.message : "Unknown error" },
-        { status: 500 }
-      );
-    }
+  let question, answer;
+
+  try {
+    const requestData = await req.json(); // リクエストボディをパース
+    question = requestData.question;
+    answer = requestData.answer;
+  } catch (error) {
+    return NextResponse.json({ message: "Invalid JSON format in request body." }, { status: 400 });
   }
+
+  if (!session?.user?.id) {
+    return NextResponse.json({ message: "User is not authenticated." }, { status: 401 });
+  }
+
+  if (!question || !answer) {
+    return NextResponse.json({ message: "Question and answer are required." }, { status: 400 });
+  }
+
+  try {
+    // Prismaを使って質問を削除（ユーザーIDを追加して、特定のユーザーの質問を削除）
+    const deletedQuestion = await prisma.question.delete({
+      where: {
+        userId_answer_question: {
+          userId: parseInt(session.user.id),
+          answer: answer,
+          question: question,
+        },
+      },
+    });
+
+    return NextResponse.json({ success: true, deletedData: deletedQuestion });
+  } catch (error) {
+    console.error("Error deleting question:", error);
+    return NextResponse.json(
+      { message: "An error occurred while deleting the question.", error: error instanceof Error ? error.message : "Unknown error" },
+      { status: 500 }
+    );
+  }
+}
