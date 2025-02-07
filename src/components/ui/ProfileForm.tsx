@@ -23,14 +23,34 @@ export const ProfileForm = () => {
     }
   }, [session]);
 
-  const handleSave = () => {
-    // ユーザー名を保存後、メッセージを表示
-    setMessage(`ユーザー名「${username}」が保存されました！`);
+   const handleSave = async () => {
+    // APIリクエストでユーザー名を更新
+    try {
+      const res = await fetch("/api/user/update", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          email: session?.user?.email, // 現在のユーザーのメールアドレスを使用
+        }),
+      });
 
-    // 少し待ってからダッシュボードにリダイレクト
-    setTimeout(() => {
-      router.push("/dashboard");  // ダッシュボードページにリダイレクト
-    }, 2000);  // 2秒後にリダイレクト（保存メッセージが見れる時間を確保）
+      if (!res.ok) {
+        throw new Error("Failed to update");
+      }
+
+      setMessage(`ユーザー名「${username}」が保存されました！`);
+
+      // 2秒後にダッシュボードにリダイレクト
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 2000);
+    } catch (error) {
+      console.error(error);
+      setMessage("ユーザー名の更新に失敗しました。");
+    }
   };
 
   return (
