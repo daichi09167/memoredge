@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import HomeNavber from '@/components/ui/HomeHeader';
-import Sidebar from '@/components/ui/HomeSidebar'; 
 import { Stack ,Box, Text, Flex, IconButton} from "@chakra-ui/react";
 import { Flipper, Flipped } from "react-flip-toolkit";
 import QuestionCard  from "@/components/ui/QuestionCard";
@@ -110,10 +109,7 @@ const DashboardPage = () => {
       <HomeNavber />
       </SessionProvider>
       <Flex>
-        {/* サイドバー */}
-        <Box  width={{ base: "100%", md: "20%" }}bg="gray.50">
-          <Sidebar />
-        </Box>
+        
         {/* メインコンテンツ */}
         <Box flex="1" padding={8}>
           <Text fontSize="2xl" fontWeight="bold" mb={4}>
