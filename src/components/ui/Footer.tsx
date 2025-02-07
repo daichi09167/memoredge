@@ -1,6 +1,5 @@
 import React from 'react';
-import Link from "next/link"; // Link コンポーネントのインポート
-import { Center, Stack, Text} from "@chakra-ui/react";
+import { Center, Stack, Text, Link} from "@chakra-ui/react";
 
 // フッターのコンポーネント
 const Footer = () => {
@@ -8,7 +7,7 @@ const Footer = () => {
     <Center>
       <Stack>
         <Link href="/privacy-policy">プライバシーポリシー</Link>
-        <Text>© 2025 daichi</Text>
+        <Text>© 2025 daichi09167</Text>
       </Stack>
     </Center>
   );
