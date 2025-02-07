@@ -98,28 +98,12 @@ export default function QuestionRegisterPage() {
           </Stack>
         </Card.Body>
         <Card.Footer display="flex" justifyContent="flex-end" gap={2}>
-          <Button
-            style={{
-              backgroundColor: "#FFCF56",
-              color: "black",
-              fontWeight: "bold",
-              padding: "5px 10px",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
+          <Button variant="solid" colorScheme="blackAlpha"
             onClick={handleSubmit}
           >
             登録する
           </Button>
-          <Button
-            style={{
-              backgroundColor: "#FFCF56",
-              color: "black",
-              fontWeight: "bold",
-              padding: "5px 10px",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
+          <Button variant="surface" colorScheme="blackAlpha"
             onClick={handleCancel}
           >
             キャンセル

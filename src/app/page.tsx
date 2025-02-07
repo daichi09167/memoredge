@@ -9,8 +9,7 @@ const Page = () => {
   return (
   <div
     style={{
-      backgroundImage: `url("/blurry-gradient-haikei.svg")`, // 相対パス
-      backgroundSize: "cover",
+      backgroundColor :'#FAF9F6',
       backgroundPosition: "center",
       minHeight: "100vh",
     }}

@@ -21,7 +21,7 @@ export const HomeNavbar = () => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundImage: `url("/blurry-gradient-haikei.svg")`, // 相対パス
+        backgroundColor :'#FAF9F6',
         padding: '10px 20px',
         borderBottom: '1px solid #FFECD2',
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
@@ -33,7 +33,7 @@ export const HomeNavbar = () => {
         style={{
           fontWeight: 'bold',
           fontSize: '24px',
-          color: '#0F0404',
+          color: '#007ACC',
         }}
       >
         MemorEdge
@@ -42,7 +42,7 @@ export const HomeNavbar = () => {
         {/* Google アカウントのアイコンを表示 */}
         <MenuRoot>
          <MenuTrigger asChild>
-        <Button variant="outline" rounded="full">
+        <Button variant="plain" rounded="full">
         {session?.user?.image ? (
         <Avatar src={session.user.image}/>
       ) : (

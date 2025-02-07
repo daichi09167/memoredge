@@ -26,10 +26,12 @@ export default function DeleteConfirmDialogmessage({ isOpen, onClose, onDelete }
       <Box bg="white" p={4} borderRadius="md" boxShadow="lg">
         <Text mb={4}>本当にこのカードを消しますか？</Text>
         <Box display="flex" justifyContent="flex-end">
-          <Button onClick={onClose} mr={2}>
+          <Button variant="surface" colorScheme="blackAlpha"
+          onClick={onClose} mr={2}>
             キャンセル
           </Button>
-          <Button colorScheme="red" onClick={onDelete}>
+          <Button variant="solid" colorScheme="blackAlpha"
+           onClick={onDelete}>
             削除
           </Button>
         </Box>

@@ -2,10 +2,19 @@
 import React from "react";
 import { Button, Card,} from "@chakra-ui/react";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/router";
 
-export const LogoutForm: React.FC = () => (
+export const LogoutForm: React.FC = () => {
+  const router = useRouter();
 
-  <Card.Root maxW="sm" boxShadow="lg" borderRadius="md" bg="amber.50">
+  const handleLogout = async () => {
+    // サインアウト後に /logout にリダイレクトする
+    await signOut({ callbackUrl: "http://localhost:3000/logout" });
+  };
+  
+  return (
+
+    <Card.Root maxW="sm" boxShadow="lg" borderRadius="md" bg="amber.50">
         <Card.Header>
           <Card.Title>ログアウトしますか？</Card.Title>
           <Card.Description>
@@ -13,19 +22,8 @@ export const LogoutForm: React.FC = () => (
           </Card.Description>
         </Card.Header>
         <Card.Body>
-        <Button 
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '5px',
-              backgroundColor: '#FFCF56',
-              color: 'black',
-              fontWeight: 'bold',
-              padding: '5px 10px',
-              borderRadius: '5px',
-              border: 'none',
-              cursor: 'pointer',
-            }} onClick={() => signOut({ callbackUrl:"http://localhost:3000"})}>       
+        <Button variant="outline" colorScheme="blackAlpha"
+             onClick={handleLogout}>       
                 ログアウト
             </Button>
         </Card.Body>
@@ -33,6 +31,7 @@ export const LogoutForm: React.FC = () => (
         </Card.Footer>
       </Card.Root>
   );
+};
   
   export default LogoutForm;
   

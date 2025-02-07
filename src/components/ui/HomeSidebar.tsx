@@ -1,7 +1,8 @@
 "use client";   
-import { MdAdd, MdCheck, MdOutlineSearch } from "react-icons/md";
+import { MdAdd, MdOutlineSearch } from "react-icons/md";
 import { Field } from "@/components/ui/field";
 import { useRouter } from "next/navigation";  // useRouter をインポート
+import { Button } from "@chakra-ui/react";
 
 export default function Sidebar() {
     const router = useRouter(); // useRouter を呼び出し
@@ -41,40 +42,6 @@ export default function Sidebar() {
     //</Field>
  // );
 
-  // Button コンポーネント
-  const Button = ({
-    icon: Icon,
-    text,
-    onHoverColor,
-    onClick,  // onClick イベントを受け取るように変更
-  }: {
-    icon: React.ElementType;
-    text: string;
-    onHoverColor: string;
-    onClick: () => void;  // onClick イベントを受け取るように変更
-  }) => (
-    <button
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "0.1rem",
-        backgroundColor: "#FB923C",
-        color: "#FFFFFF",
-        padding: "0.5rem 1rem",
-        borderRadius: "0.5rem",
-        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-        border: "none",
-        cursor: "pointer",
-        transition: "background-color 0.2s",
-      }}
-      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = onHoverColor)}
-      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#FB923C")}
-      onClick={onClick}  // ボタンクリック時に onClick イベントを呼び出し
-    >
-      <Icon style={{ fontSize: "1rem" }} />
-      <span style={{ fontSize: "0.875rem" }}>{text}</span>
-    </button>
-  );
   // 登録ページに遷移する関数
   const handleRegisterClick = () => {
     router.push("/register");  // /register ページに遷移
@@ -93,7 +60,7 @@ export default function Sidebar() {
       }}
     >
       <div style={{ width: "90%", marginBottom: "2rem" }}>
-        {/* <SearchInput /> */}
+        {/* <SearchInput /> */} {/* SearchInput コンポーネントを追加 */}
       </div>
       <div
         style={{
@@ -103,7 +70,10 @@ export default function Sidebar() {
         }}
       >
         {/* 登録ボタンに遷移処理を追加 */}
-        <Button icon={MdAdd} text="登録" onHoverColor="#F97316" onClick={handleRegisterClick} />
+        <Button onClick={handleRegisterClick} colorScheme="blackAlpha" variant="outline">
+          <MdAdd />
+          登録
+        </Button>
       </div>
     </div>
   );

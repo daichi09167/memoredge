@@ -13,20 +13,10 @@ export const CardWithForm2: React.FC = () => (
         </Card.Description>
       </Card.Header>
       <Card.Body>
-      <Button 
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '5px',
-            backgroundColor: '#FFCF56',
-            color: 'black',
-            fontWeight: 'bold',
-            padding: '5px 10px',
-            borderRadius: '5px',
-            border: 'none',
-            cursor: 'pointer',
-          }} onClick={() => signIn("google", { callbackUrl: "/dashboard" })}>       
-            Googleでログイン
+      <Button  variant="outline" colorScheme="blackAlpha"
+      onClick={() => signIn("google", { callbackUrl: "/dashboard" })}>       
+         <img src="/google-logo.svg" alt="Google Logo" width="20" height="20" />
+          Googleでログイン
           </Button>
       </Card.Body>
       <Card.Footer display="flex" justifyContent="flex-end" gap={2}>
