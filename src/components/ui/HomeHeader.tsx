@@ -10,6 +10,7 @@ import {
   MenuRoot,
   MenuTrigger,
 } from "@/components/ui/menu";
+import { SessionProvider } from "next-auth/react";  // Import SessionProvider
 
 
 
@@ -55,7 +56,7 @@ export const HomeNavbar = () => {
           <Link href="/profile">プロフィール</Link>
         </MenuItem>
         <MenuItem asChild value="logout">
-          <Link href="/api/auth/signout">ログアウト</Link>
+          <Link href="/logout">ログアウト</Link>
         </MenuItem>
         <MenuItem asChild value="privacy-policy">
           <Link href="/privacy-policy">プライバシーポリシー</Link>
