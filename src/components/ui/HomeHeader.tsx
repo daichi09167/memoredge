@@ -74,6 +74,9 @@ export const HomeNavbar = () => {
         <MenuItem asChild value="privacy-policy">
           <Link href="/privacy-policy">プライバシーポリシー</Link>
         </MenuItem>
+        <MenuItem asChild value="delete-account">
+          <Link href="/delete-account">アカウント削除</Link>
+        </MenuItem>
       </MenuContent>
           </MenuRoot>
 
