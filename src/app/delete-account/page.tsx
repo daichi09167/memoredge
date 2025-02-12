@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React from 'react';
 import DeleteAccountForm from "@/components/ui/DeleteAccountForm";
 import HomeNavbar from "@/components/ui/HomeHeader";
 import { Center, Stack } from "@chakra-ui/react";

@@ -28,13 +28,13 @@ export async function POST(req: Request) {
 
 
     return NextResponse.json(
-      { message: "Question registered successfully!", data: question},
+      { message: "Question registered successfully!", data: result},
       { status: 201 }
     );
-  } catch (error) {
-    console.error("Error saving question:", (error as any)?.message || "Unknown error");
+  } catch  {
+    console.error("Error saving question:");
     return NextResponse.json(
-      { message: "An error occurred while registering the question.", error: (error as Error)?.message || "Unknown error"  },
+      { message: "An error occurred while registering the question." },
       { status: 500 }
     );
   }
@@ -61,10 +61,10 @@ export async function GET(req: NextRequest) {
       },
     });
     return NextResponse.json(questions, { status: 200 });
-  } catch (error) {
-    console.error("Error fetching questions:", error);
+  } catch  {
+    console.error("Error fetching questions:");
     return NextResponse.json(
-      { message: "An error occurred while fetching questions.", error:  error instanceof Error ? error.message : "Unknown error" },
+      { message: "An error occurred while fetching questions." },
       { status: 500 }
     );
   }
@@ -84,7 +84,7 @@ export async function DELETE(req: NextRequest) {
     const requestData = await req.json(); // リクエストボディをパース
     question = requestData.question;
     answer = requestData.answer;
-  } catch (error) {
+  } catch {
     return NextResponse.json({ message: "Invalid JSON format in request body." }, { status: 400 });
   }
 
@@ -109,10 +109,10 @@ export async function DELETE(req: NextRequest) {
     });
 
     return NextResponse.json({ success: true, deletedData: deletedQuestion });
-  } catch (error) {
-    console.error("Error deleting question:", error);
+  } catch  {
+    console.error("Error deleting question:");
     return NextResponse.json(
-      { message: "An error occurred while deleting the question.", error: error instanceof Error ? error.message : "Unknown error" },
+      { message: "An error occurred while deleting the question." },
       { status: 500 }
     );
   }

@@ -12,7 +12,7 @@ export default function QuestionRegisterPage() {
   const [messageType, setMessageType] = useState(""); // メッセージの種類 (success or error)
   const router = useRouter();
   // NextAuthでセッションを取得
-  const { data: session, status } = useSession();
+  const { data: session} = useSession();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -2,7 +2,6 @@
 
 import { Box, Text, IconButton ,Stack,useDisclosure} from "@chakra-ui/react";
 import { MdDelete } from "react-icons/md";
-import { useState } from "react";
 import DeleteConfirmDialogmessage from "./DeleteConfirmDialog";
 
 type QuestionCardProps = {
@@ -15,7 +14,7 @@ type QuestionCardProps = {
 };
 
 export function QuestionCard({ id, question, answer, flipped, onClick, onDelete }: QuestionCardProps) {
-  const { onOpen, onClose, open, onToggle } = useDisclosure();
+  const { onOpen, onClose, open} = useDisclosure();
   const handleDelete = () => {
     onDelete(id, question, answer); // 親コンポーネントの削除関数を呼び出す
   };

@@ -10,7 +10,7 @@ export const CardWithForm2: React.FC = () => (
       <Card.Header>
         <Card.Title>MemorEdgeにログインしよう</Card.Title>
         <Card.Description>
-         Let's sign in with your Google account."
+         Let&apos;s sign in with your Google account.
         </Card.Description>
       </Card.Header>
       <Card.Body>

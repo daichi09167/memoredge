@@ -9,7 +9,7 @@ const pool = new Pool({
   port: Number(process.env.DB_PORT) || 5432, // ポート番号
 });
 
-export const query = async (text: string, params?: any[]) => {
+export const query = async (text: string, params?: []) => {
     try {
       const res = await (await pool.connect()).query(text, params);
       return res;

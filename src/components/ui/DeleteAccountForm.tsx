@@ -1,49 +1,44 @@
 "use client";
 import React, { useState } from 'react';
-import { Button, Card, HStack ,Center} from "@chakra-ui/react";
+import { Button, Card, HStack } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 
 interface DeleteAccountFormProps {
-    onDeleteSuccess: () => void;  // 削除成功時のコールバック
-    onCancel: () => void;  // キャンセル時のコールバック
+  onDeleteSuccess: () => void;  // 削除成功時のコールバック
+  onCancel: () => void;  // キャンセル時のコールバック
+}
+
+const DeleteAccountForm: React.FC<DeleteAccountFormProps> = ({ onDeleteSuccess, onCancel }) => {
+  const [isDeleting, setIsDeleting] = useState(false);
+  const { data: session } = useSession();
+  // userIdをセッションから取得
+  const userId = session?.user?.id;
+
+  if (!userId) {
+      return <div>ログインしていないか、セッションが無効です</div>;
   }
 
-  const DeleteAccountForm: React.FC<DeleteAccountFormProps> = ({ onDeleteSuccess, onCancel }) => {
-    const [isDeleting, setIsDeleting] = useState(false);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const { data: session } = useSession();
-    // userIdをセッションから取得
-    const userId = session?.user?.id;
-
-    if (!userId) {
-        return <div>ログインしていないか、セッションが無効です</div>;
-      }
-  
-    const handleDelete = async () => {
+  const handleDelete = async () => {
       setIsDeleting(true);
-      setErrorMessage(null);
-  
+
       try {
-        const res = await fetch('/api/user/delete', {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId }),
-        });
-  
-        if (res.ok) {
-          onDeleteSuccess();  // 削除成功時の処理
-        } else {
-          const data = await res.json();
-          setErrorMessage(data.message || '削除に失敗しました');
-        }
+          const res = await fetch('/api/user/delete', {
+              method: 'DELETE',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ userId }),
+          });
+
+          if (res.ok) {
+              onDeleteSuccess();  // 削除成功時の処理
+          }
       } catch (error) {
-        setErrorMessage('退会処理中にエラーが発生しました');
+          console.error('退会処理中にエラーが発生しました');
       } finally {
-        setIsDeleting(false);
+          setIsDeleting(false);
       }
-    };
+  };
   
   return (
     <Card.Root maxW="sm" boxShadow="lg" borderRadius="md" bg="amber.50">
