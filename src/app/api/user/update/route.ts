@@ -9,7 +9,8 @@ export async function PUT(request: Request) {
   }
 
   try {
-    const user = await prisma.user.update({
+    // ユーザー情報の更新
+    await prisma.user.update({
       where: { email },
       data: { name: username },
     });

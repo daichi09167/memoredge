@@ -33,8 +33,7 @@ const DeleteAccountForm: React.FC<DeleteAccountFormProps> = ({ onDeleteSuccess, 
           if (res.ok) {
               onDeleteSuccess();  // 削除成功時の処理
           }
-      } catch (error) {
-          console.error('退会処理中にエラーが発生しました');
+      } catch {
       } finally {
           setIsDeleting(false);
       }
