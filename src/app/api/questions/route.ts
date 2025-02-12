@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";  // Prismaクライアントをインポート
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";  // 認証オプションをインポート
+import { authOptions } from "@/app/api/auth/authOptions";  // 認証オプションをインポート
 import { getServerSession } from "next-auth/next";
 
 
