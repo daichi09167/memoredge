@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import HomeNavber from '@/components/ui/HomeHeader';
-import { Stack ,Box, Text, Flex, IconButton} from "@chakra-ui/react";
+import { Box, Text, Flex} from "@chakra-ui/react";
 import { Flipper, Flipped } from "react-flip-toolkit";
 import QuestionCard  from "@/components/ui/QuestionCard";
 import { SimpleGrid } from "@chakra-ui/react"

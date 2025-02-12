@@ -1,7 +1,7 @@
 import React from 'react';
 import { Heading } from "@chakra-ui/react"
 import { List } from "@chakra-ui/react"
-import { Text ,Stack, Separator} from "@chakra-ui/react"
+import { Text ,Stack} from "@chakra-ui/react"
 
 const PrivacyPolicyPage = () => {
   return (

@@ -2,7 +2,7 @@
 import React from 'react';
 import ProfileForm from "@/components/ui/ProfileForm";
 import HomeNavbar from "@/components/ui/HomeHeader";
-import { Center, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { SessionProvider } from "next-auth/react";
 
 const ProfilePage = () => {

@@ -2,6 +2,7 @@
 import React from "react";
 import { Button, Card,} from "@chakra-ui/react";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 
 export const CardWithForm2: React.FC = () => (
   
@@ -15,7 +16,7 @@ export const CardWithForm2: React.FC = () => (
       <Card.Body>
       <Button  variant="outline" colorScheme="blackAlpha"
       onClick={() => signIn("google", { callbackUrl: "/dashboard" })}>       
-         <img src="/google-logo.svg" alt="Google Logo" width="20" height="20" />
+         <Image src="/google-logo.svg" alt="Google Logo" width="20" height="20" />
           Googleでログイン
           </Button>
       </Card.Body>

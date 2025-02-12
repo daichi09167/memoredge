@@ -2,6 +2,7 @@ import NextAuth, { NextAuthOptions }from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prisma";
+
 declare module "next-auth" {
   interface Session {
     user: {
@@ -12,6 +13,7 @@ declare module "next-auth" {
     };
   }
 }
+
 export const authOptions: NextAuthOptions =({
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -31,6 +33,7 @@ export const authOptions: NextAuthOptions =({
         const existingUser = await prisma.user.findUnique({
           where: { email: user.email ?? undefined },
         });
+
         if (!existingUser) {
           // 新規ユーザー登録時にアカウント情報も登録
           await prisma.user.create({
@@ -49,6 +52,7 @@ export const authOptions: NextAuthOptions =({
           });
           return true;
         }
+
      // 既存のユーザーがいた場合、Googleアカウントとリンクされているかを確認
      const existingAccount = await prisma.account.findUnique({
       where: {
@@ -58,6 +62,7 @@ export const authOptions: NextAuthOptions =({
         },
       },
     });
+
       // アカウントがリンクされていない場合、リンク処理
       if (!existingAccount) {
         await prisma.account.create({
@@ -85,4 +90,5 @@ export const authOptions: NextAuthOptions =({
   },
 });
 const handler = NextAuth(authOptions);
+
 export { handler as GET, handler as POST };
