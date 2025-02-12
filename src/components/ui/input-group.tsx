@@ -25,8 +25,8 @@ export const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
       ...rest
     } = props
 
-    const child =
-      React.Children.only<React.ReactElement<InputElementProps>>(children)
+    const child = React.Children.only(children) as React.ReactElement<InputElementProps>;
+
 
     return (
       <Group ref={ref} {...rest}>
@@ -40,7 +40,7 @@ export const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
             ps: `calc(var(--input-height) - ${startOffset})`,
           }),
           ...(endElement && { pe: `calc(var(--input-height) - ${endOffset})` }),
-          ...children.props,
+          ...child.props, // 修正: children.props ではなく child.props に変更
         })}
         {endElement && (
           <InputElement placement="end" {...endElementProps}>
@@ -48,6 +48,6 @@ export const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
           </InputElement>
         )}
       </Group>
-    )
-  },
-)
+    );
+  }
+);
