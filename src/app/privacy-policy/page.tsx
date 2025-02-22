@@ -1,7 +1,7 @@
 import React from 'react';
 import { Heading } from "@chakra-ui/react"
 import { List } from "@chakra-ui/react"
-import { Text ,Stack} from "@chakra-ui/react"
+import { Text ,Stack,Link} from "@chakra-ui/react"
 
 const PrivacyPolicyPage = () => {
   return (
@@ -13,10 +13,10 @@ const PrivacyPolicyPage = () => {
         <Text>当サービスでは、以下の情報を収集する場合があります：</Text>
         <List.Root>
          <List.Item>Google アカウント情報</List.Item>
-          <Text lineClamp="2">当サービスは Google 認証を利用します。その際、名前、メールアドレス、プロフィール画像などの基本情報を取得する場合があります。
+          <Text>当サービスは Google 認証を利用します。その際、名前、メールアドレス、プロフィール画像などの基本情報を取得する場合があります。
           </Text>
          <List.Item>アクセス情報</List.Item>
-          <Text lineClamp="2">サービスの改善のため、Google Analytics により、アクセス元、ブラウザの種類、利用時間などの匿名情報を収集する場合があります。
+          <Text>サービスの改善のため、Google Analytics により、アクセス元、ブラウザの種類、利用時間などの匿名情報を収集する場合があります。
           </Text>
         </List.Root>
         <Heading fontWeight="semibold">2.情報の利用目的</Heading>
@@ -34,7 +34,9 @@ const PrivacyPolicyPage = () => {
         <Heading fontWeight="semibold">4.プライバシーポリシーの変更</Heading>
         <Text>当サービスは、必要に応じて本プライバシーポリシーの内容を変更する場合があります。重要な変更がある場合は、適切な方法で通知します。</Text>
         <Heading fontWeight="semibold">5.お問い合わせ</Heading>
-        <Text>プライバシーポリシーに関する質問や疑問がある場合は、以下の連絡先までお問い合わせください：</Text>
+        <Text>プライバシーポリシーに関する質問や疑問がある場合は、以下の連絡先までお問い合わせください：
+          <Link href="https://docs.google.com/forms/d/e/1FAIpQLSf_5N-msCEAXbOmsUelW9dsUZ48vAKNnquY9vRPjyrUvTeApQ/viewform?usp=dialog">お問い合わせフォーム</Link>
+        </Text>
        </Stack>
 
       
