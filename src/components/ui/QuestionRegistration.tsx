@@ -40,7 +40,7 @@ export default function QuestionRegisterPage() {
       });
 
       if (response.ok) {
-        setMessage("問題と回答が正常に登録されました。");
+        setMessage("問題と解答が正常に登録されました。");
         setMessageType("success");
         setTimeout(() => router.push("/dashboard"), 3000); // 成功後ダッシュボードへ遷移
       } else {
@@ -62,7 +62,7 @@ export default function QuestionRegisterPage() {
     <Box display="flex" alignItems="center" justifyContent="center" minHeight="100vh">
       <Card.Root maxW="sm" boxShadow="lg" borderRadius="md" bg="amber.50">
         <Card.Header>
-          <Card.Title>問題と回答を登録してみよう</Card.Title>
+          <Card.Title>問題と解答を登録してみよう</Card.Title>
           <Card.Description>
             Fill in the form below to register a question and answer.
           </Card.Description>
@@ -80,10 +80,10 @@ export default function QuestionRegisterPage() {
             </Field>
 
             {/* 回答 */}
-            <Field label="回答">
+            <Field label="解答">
               <Textarea
                 variant="outline"
-                placeholder="回答"
+                placeholder="解答"
                 value={answer}
                 onChange={(e) => setAnswer(e.target.value)}
               />
