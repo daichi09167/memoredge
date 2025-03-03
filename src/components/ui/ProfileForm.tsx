@@ -82,7 +82,7 @@ export const ProfileForm = () => {
                 </center>
                {/* ユーザー名 */}
               <Field label="ユーザー名">
-                <Input  placeholder="たろう"
+                <Input 
                  value={username}
                  onChange={(e) => setUsername(e.target.value)} />
               </Field>
